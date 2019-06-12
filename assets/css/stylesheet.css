@@ -12,3 +12,7 @@ html, body {
   canvas {
     border: 1px solid white;
   }
+  .gameinfo{
+    color: white;
+    font-size: 20pt;
+  }

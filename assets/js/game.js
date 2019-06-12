@@ -1,15 +1,15 @@
 Window.Game = {};
 
-(function(game){
+(function(Game){
     //this line of code grabes a html element for later use.
     var canvas = document.getElementById('game');
     //this takes a the context of the canvas html element, you can compare it to taking the image data of a image.
     var context = canvas.getContext('2d');
 
-   
     //startup values for the game.
     var grid = 16;
     var count = 0;
+    var score = 0;
     var pauze = false;
     var snake = {
         x: 160,
@@ -23,7 +23,8 @@ Window.Game = {};
         cells: [],
         
         // length of the snake. grows when eating an apple
-        maxCells: 4
+        maxCells: 4,
+        
       };
       var apple = {
         x: 320,
@@ -46,9 +47,23 @@ Window.Game = {};
         snake.dx = grid;
         snake.dy = 0;
         
+        //set position of apple
         apple.x = getRandomInt(0, 25) * grid;
         apple.y = getRandomInt(0, 25) * grid;
     }
+
+    //todo: this is a assigment
+    function collision(objectA,objectB)
+    {
+        return objectA.x === objectB.x && objectA.y === objectB.y;
+    }
+
+    //todo: this is also a assigment
+    function UpdateScoreOnScreen()
+    {
+        $("#score i").html(score);
+    }
+
     //game loop
     function loop()
     {
@@ -110,9 +125,10 @@ Window.Game = {};
             context.fillRect(cell.x, cell.y, grid-1, grid-1);  
         
             // snake ate apple
-            if (cell.x === apple.x && cell.y === apple.y) {
-              snake.maxCells++;
-        
+            if (collision(cell,apple)) {
+                snake.maxCells++;
+                score++;
+                UpdateScoreOnScreen();
               // canvas is 400x400 which is 25x25 grids 
               apple.x = getRandomInt(0, 25) * grid;
               apple.y = getRandomInt(0, 25) * grid;
@@ -124,23 +140,23 @@ Window.Game = {};
               
               // snake occupies same space as a body part. reset game
               if (cell.x === snake.cells[i].x && cell.y === snake.cells[i].y && !pauze) {
-                game.gameOver();
+                Game.GameOver();
               }
             }
           });
 
 
     }
-    game.reset = function()
+    Game.Reset = function()
     {
         Window.Utils.dissmissModal();
         resetGame();
     }
-    game.gameOver = function()
+    // maybe this as a assigment
+    Game.GameOver = function()
     {
         pauze = true;
-        let score = 1230
-        Window.Utils.createModal("Game over","You scored: <i>"+score+"</i> points",Window.Utils.createBtns([{text:"start over",click:"Window.Game.reset()",type:"primary"}]))
+        Window.Utils.createModal("Game over","You scored: <i>"+score+"</i> points");
     }
 
     // listen to keyboard events to move the snake
