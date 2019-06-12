@@ -1,4 +1,6 @@
-(function(){
+Window.Game = {};
+
+(function(game){
     //this line of code grabes a html element for later use.
     var canvas = document.getElementById('game');
     //this takes a the context of the canvas html element, you can compare it to taking the image data of a image.
@@ -8,7 +10,7 @@
     //startup values for the game.
     var grid = 16;
     var count = 0;
-
+    var pauze = false;
     var snake = {
         x: 160,
         y: 160,
@@ -34,7 +36,19 @@
         //Math is a library build into JAVASCRIPT. that deals with mathematics that are more complicated than adding or subtracting numbers.
         return Math.floor(Math.random() * (max - min)) + min;
     }
-
+    function resetGame()
+    {
+        pauze = false;
+        snake.x = 160;
+        snake.y = 160;
+        snake.cells = [];
+        snake.maxCells = 4;
+        snake.dx = grid;
+        snake.dy = 0;
+        
+        apple.x = getRandomInt(0, 25) * grid;
+        apple.y = getRandomInt(0, 25) * grid;
+    }
     //game loop
     function loop()
     {
@@ -50,9 +64,12 @@
         //clear canvas html element. 
         context.clearRect(0,0,canvas.width,canvas.height);
 
-        // move snake by it's velocity
-        snake.x += snake.dx;
-        snake.y += snake.dy;
+        if(!pauze)
+        {
+            // move snake by it's velocity
+            snake.x += snake.dx;
+            snake.y += snake.dy;
+        }
 
         // wrap snake position horizontally on edge of screen
         if (snake.x < 0) {
@@ -106,21 +123,24 @@
             for (var i = index + 1; i < snake.cells.length; i++) {
               
               // snake occupies same space as a body part. reset game
-              if (cell.x === snake.cells[i].x && cell.y === snake.cells[i].y) {
-                snake.x = 160;
-                snake.y = 160;
-                snake.cells = [];
-                snake.maxCells = 4;
-                snake.dx = grid;
-                snake.dy = 0;
-        
-                apple.x = getRandomInt(0, 25) * grid;
-                apple.y = getRandomInt(0, 25) * grid;
+              if (cell.x === snake.cells[i].x && cell.y === snake.cells[i].y && !pauze) {
+                game.gameOver();
               }
             }
           });
 
 
+    }
+    game.reset = function()
+    {
+        Window.Utils.dissmissModal();
+        resetGame();
+    }
+    game.gameOver = function()
+    {
+        pauze = true;
+        let score = 1230
+        Window.Utils.createModal("Game over","You scored: <i>"+score+"</i> points",Window.Utils.createBtns([{text:"start over",click:"Window.Game.reset()",type:"primary"}]))
     }
 
     // listen to keyboard events to move the snake
@@ -154,4 +174,4 @@
 
     //this starts the game.
     requestAnimationFrame(loop);
-})();
+})(Window.Game);
