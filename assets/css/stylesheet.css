@@ -4,6 +4,7 @@ html, body {
   }
 
   body {
+    color: yellow;
     background: black;
     display: flex;
     align-items: center;
