@@ -1,14 +1,13 @@
 (function(){
-    //this line of code grabs an html element for later use
-    var canvas = document.getElementById('game');
-    //this takes a the context of the canvas html element, you can compare it to taking the image data of an image
-    var context = canvas.getContext('2d');
+    // Grab the canvas, which is the part of the screen the game is played in
+    let canvas = document.getElementById('game');
+    // Retrieve the context of the canvas html element, compare it to taking the image data from an image
+    let context = canvas.getContext('2d');
 
     const KEY_LEFT = 37;
     const KEY_UP = 38;
     const KEY_RIGHT = 39;
     const KEY_DOWN = 40;
-
     const CELL_SIZE = 16;
     const CANVAS_SIZE = 15;
 
@@ -18,7 +17,7 @@
     let acceptInput = true;
     canvas.height = canvas.width = CANVAS_SIZE * CELL_SIZE;
 
-    var snake = {
+    let snake = {
         // The snake's starting position (top left)
         x: 0,
         y: 0,
@@ -34,7 +33,7 @@
         length: 4
       };
 
-    var apple = {
+    let apple = {
         // The first apple's position (bottom right)
         x: (CANVAS_SIZE - 1) * CELL_SIZE,
         y: (CANVAS_SIZE - 1) * CELL_SIZE
@@ -50,7 +49,7 @@
     // Game loop
     function loop()
     {
-        //this lets the browser decide when its best to render our game.
+        // Lets the browser decide when its best to render the game
         requestAnimationFrame(loop);
 
         // slow game loop to 15 fps instead of 60 (60/15 = 4)
@@ -92,25 +91,22 @@
             snake.cells.pop();
         }
 
-        // this sets the color of the apple and then draws the apple
+        // Sets the color for the apple and draw it
         context.fillStyle = 'red';
         context.fillRect(apple.x, apple.y, CELL_SIZE-1, CELL_SIZE-1);
 
-        // this sets the color of the snake
-        context.fillStyle = 'green';
-        // the snake is comprized of multiple parts that make its body we have to loop through all the parts to make him appear on screen we do this using a forEach loop.
+        // Loop over each part of the snake to draw it for the next frame and check for collision with itself
         snake.cells.forEach(function(cell, index) {
+            context.fillStyle = 'green';
             
-            //a cell is a piece of the snake, and the index is at what position it is in the snake.
-
-            // drawing 1 px smaller than the grid creates a grid effect in the snake body so you can see how long it is
+            // A cell is a piece of the snake, and the index and the index defines the position in the snake
             context.fillRect(cell.x, cell.y, CELL_SIZE, CELL_SIZE);  
         
-            // snake ate apple
+            // Check if the snake eats an apple
             if (cell.x === apple.x && cell.y === apple.y) {
               snake.length++;
         
-              // canvas is 400x400 which is 25x25 grids 
+              // Place a new apple on a random location in the canvas
               apple.x = getRandomInt(0, CANVAS_SIZE) * CELL_SIZE;
               apple.y = getRandomInt(0, CANVAS_SIZE) * CELL_SIZE;
             }
@@ -121,51 +117,45 @@
               
               // snake occupies same space as a body part. reset game
               if (cell.x === snake.cells[i].x && cell.y === snake.cells[i].y) {
-                snake.x = 160;
-                snake.y = 160;
+                snake.x = 0;
+                snake.y = 0;
                 snake.cells = [];
                 snake.length = 4;
                 snake.dx = CELL_SIZE;
                 snake.dy = 0;
         
-                apple.x = getRandomInt(0, 25) * CELL_SIZE;
-                apple.y = getRandomInt(0, 25) * CELL_SIZE;
+                apple.x = getRandomInt(0, CANVAS_SIZE) * CELL_SIZE;
+                apple.y = getRandomInt(0, CANVAS_SIZE) * CELL_SIZE;
               }
             }
           });
-
-
     }
 
-    // listen to keyboard events to move the snake
+    // Listens to keyboard events, used to control the snake
     document.addEventListener('keydown',function(keyBoardEvent){
-        // prevent snake from backtracking on itself by checking that it's 
-        // not already moving on the same axis (pressing left while moving
-        // left won't do anything, and pressing right while moving left
-        // shouldn't let you collide with your own body)
         if (false === acceptInput) {
             return;
         }
 
-        // left arrow key
+        // Change direction when the left arrow key is pressed
         if (keyBoardEvent.which === KEY_LEFT && snake.dx === 0) {
             snake.dx = -CELL_SIZE;
             snake.dy = 0;
             acceptInput = false;
         }
-        // up arrow key
+        // Change direction when the up arrow key is pressed
         else if (keyBoardEvent.which === KEY_UP && snake.dy === 0) {
             snake.dx = 0;
             snake.dy = -CELL_SIZE;
             acceptInput = false;
         }
-        // right arrow key
+        // Change direction when the right arrow key is pressed
         else if (keyBoardEvent.which === KEY_RIGHT && snake.dx === 0) {
             snake.dx = CELL_SIZE;
             snake.dy = 0;
             acceptInput = false;
         }
-        // down arrow key
+        // Change direction when the down arrow key is pressed
         else if (keyBoardEvent.which === KEY_DOWN && snake.dy === 0) {
             snake.dx = 0;
             snake.dy = CELL_SIZE;
@@ -173,6 +163,6 @@
         }
     });
 
-    //this starts the game.
+    // Starts the game
     requestAnimationFrame(loop);
 })();
