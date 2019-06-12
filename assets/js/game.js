@@ -9,11 +9,11 @@
     const KEY_RIGHT = 39;
     const KEY_DOWN = 40;
     const CELL_SIZE = 16;
-    const CANVAS_SIZE = 15;
+    const CANVAS_SIZE = 5;
 
     // Startup values
     let frameCounter = 0;
-    let frameCounterLimit = 4;
+    let frameCounterLimit = 30;
     let acceptInput = true;
     canvas.height = canvas.width = CANVAS_SIZE * CELL_SIZE;
 
@@ -97,6 +97,7 @@
 
         // Loop over each part of the snake to draw it for the next frame and check for collision with itself
         snake.cells.forEach(function(cell, index) {
+            // Set the snake's color
             context.fillStyle = 'green';
             
             // A cell is a piece of the snake, and the index and the index defines the position in the snake
@@ -147,18 +148,6 @@
         else if (keyBoardEvent.which === KEY_UP && snake.dy === 0) {
             snake.dx = 0;
             snake.dy = -CELL_SIZE;
-            acceptInput = false;
-        }
-        // Change direction when the right arrow key is pressed
-        else if (keyBoardEvent.which === KEY_RIGHT && snake.dx === 0) {
-            snake.dx = CELL_SIZE;
-            snake.dy = 0;
-            acceptInput = false;
-        }
-        // Change direction when the down arrow key is pressed
-        else if (keyBoardEvent.which === KEY_DOWN && snake.dy === 0) {
-            snake.dx = 0;
-            snake.dy = CELL_SIZE;
             acceptInput = false;
         }
     });

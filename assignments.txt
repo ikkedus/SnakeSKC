@@ -1,0 +1,21 @@
+Assignment 1:
+The canvas is rather small. Increase it by adjusting the canvas size value.
+
+Assignment 2:
+The snake moves once every 30 frames. Now that the canvas size has been increased this is rather slow. Make it move more frequently by adjusting the frame counter limit.
+
+Assignment 3:
+The input controls only work in two directions. Implement controls for the other two directions.
+
+Assignment 4:
+Right now the snake wraps around when it reaches the edge of the game screen. In some versions of the game hitting the wall ends the game.
+Make the necessary changes so that the game resets when the snake hits the edge of the screen.
+
+Assignment 5:
+The score system doesn't work. Give the player points whenever an apple is eaten.
+
+Assignment +:
+Give the snake a pseudo-random color whenever an apple is eaten. Make sure it's not too dark or you won't be able to see the snake.
+
+Assignment +:
+Increase the snake's speed for every x amount of apples that are eaten.
