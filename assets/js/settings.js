@@ -22,3 +22,12 @@ const KEY_LEFT = 37;
 const KEY_UP = 38;
 const KEY_RIGHT = 39;
 const KEY_DOWN = 40;
+
+/**
+ * Variables to simplify movement naming
+ * [!] Do not change these values.
+ */
+const MOVE_UP = -CELL_SIZE;
+const MOVE_DOWN = CELL_SIZE;
+const MOVE_LEFT = -CELL_SIZE;
+const MOVE_RIGHT = CELL_SIZE;

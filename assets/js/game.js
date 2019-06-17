@@ -13,6 +13,9 @@ Window.Game = {};
     let score = 0;
     let pause = false;
 
+    /**
+     * ASSIGNMENT 2
+     */
     // Limits the game speed by reducing the rate at which frames are drawn
     let frameCounterLimit = 30;
 
@@ -159,22 +162,22 @@ Window.Game = {};
             return;
         }
 
-        // Change direction when the left arrow key is pressed
+        // Change direction when the left arrow key is pressed and the snake isn't already moving horizontally
         if (keyBoardEvent.which === KEY_LEFT && snake.dx === 0) {
-            // Move by CELL_SIZE to the left (negative CELL_SIZE)
-            snake.dx = -CELL_SIZE;
+            // Change horizontal movement to left
+            snake.dx = MOVE_LEFT;
 
             // Do not change vertical position
             snake.dy = 0;
             acceptInput = false;
         }
-        // Change direction when the up arrow key is pressed
+        // Change direction when the up arrow key is pressed and the snake isn't already moving vertically
         else if (keyBoardEvent.which === KEY_UP && snake.dy === 0) {
             // Do not change horizontal position
             snake.dx = 0;
 
-            // Move upwards by CELL_SIZE (negative CELL_SIZE)
-            snake.dy = -CELL_SIZE;
+            // Change horizontal movement to right
+            snake.dy = MOVE_UP;
             acceptInput = false;
         }
     });

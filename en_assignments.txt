@@ -1,9 +1,13 @@
+- Open index.html. This is the game, whenever you make changes in your code refresh the browser to apply them.
+- Only modify files in the assets/js folder!
+
 Assignment 1:
 The canvas is rather small. Increase it by adjusting the canvas size value in settings.js.
 
 Assignment 2:
 The snake moves once every 30 frames. Now that the canvas size has been increased this is rather slow.
 Make it move more frequently by reducing the frame counter limit near the top of game.js.
+The appropriate location has been making with an "ASSIGNMENT 2" comment.
 
 Assignment 3:
 The input controls only work in two directions. Implement controls for the other two directions.
@@ -14,14 +18,14 @@ Right now the snake wraps around when it reaches the edge of the game screen. In
 Make the necessary changes to the checkEdgeCollision() function so that the game resets when the snake hits any of the edges of the screen.
 
 Assignment 5:
-The score system doesn't work. Give the player points whenever an apple is eaten by increasing the value of the score variable.
+The score system doesn't work. Give the player points when appropriate by using the updateScore() function.
 
-Assignment +:
+Bonus Assignment:
 Give the snake a random color whenever an apple is eaten. Make sure it's not too dark or you won't be able to see the snake.
 
-Assignment +:
+Bonus Assignment:
 Increase the snake's speed for every x amount of apples that are eaten.
 
-Assignment +:
+Bonus Assignment:
 Add a golden apple to the game. It has a 10% chance to appear instead of the regular apple every time an apple is eaten.
 It grants more scorepoints than the regular apple.
