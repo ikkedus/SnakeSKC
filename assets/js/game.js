@@ -1,4 +1,6 @@
-(function () {
+Window.Game = {};
+
+(function (game) {
     // Grab the canvas, which is the part of the screen the game is played in
     let canvas = document.getElementById('game');
     // Retrieve the context of the canvas html element, compare it to taking the image data from an image
@@ -9,6 +11,7 @@
     let frameCounter = 0;
     let acceptInput = true;
     let score = 0;
+    let pause = false;
 
     // Limits the game speed by reducing the rate at which frames are drawn
     let frameCounterLimit = 30;
@@ -20,6 +23,11 @@
     function loop() {
         // Lets the browser decide when its best to render the game
         requestAnimationFrame(loop);
+
+        // Exit function if game is paused
+        if (pause) {
+            return;
+        }
 
         // Limits the framerate to reduce game speed
         if (++frameCounter < frameCounterLimit) {
@@ -66,23 +74,20 @@
     }
 
     function resetGame() {
+        pause = false;
         resetScore();
         resetSnake();
         randomizeApple();
     }
 
     function resetScore() {
-        score = 0;
-        updateScore();
+        updateScore(0);
     }
 
     // Increase the length of the snake and place the apple at a new location
     function eatApple() {
         // Increase the snake's length
         snake.length++;
-
-        // Update the score text
-        updateScore();
 
         // Place a new apple on a random location in the canvas
         randomizeApple();
@@ -114,15 +119,16 @@
             // Check for collision with all cells after the current one to see if the snake collides with itself
             for (var i = index + 1; i < snake.cells.length; i++) {
                 // Snake has collided with itself
-                if (cell.x === snake.cells[i].x && cell.y === snake.cells[i].y) {
-                    resetGame();
+                if (cell.x === snake.cells[i].x && cell.y === snake.cells[i].y && !pause) {
+                    game.gameOver();
                 }
             }
         });
     }
 
     // Updates the score text
-    function updateScore() {
+    function updateScore(pointsScored) {
+        score += pointsScored;
         scoreText.textContent = 'Score: ' + score;
     }
 
@@ -130,6 +136,21 @@
     function drawApple() {
         context.fillStyle = apple.color;
         context.fillRect(apple.x, apple.y, CELL_SIZE - 1, CELL_SIZE - 1);
+    }
+
+    // Reset function definition
+    game.reset = function () {
+        Window.Utils.dismissModal();
+        resetGame();
+    }
+
+    // Game over function definition
+    game.gameOver = function() {
+        pause = true;
+        Window.Utils.createModal(
+            "Game over",
+            "You scored: <i>"+score+"</i> points",
+            Window.Utils.createBtns([{text:"start over", click:"Window.Game.reset()", type:"primary"}]))
     }
 
     // Listens to keyboard events, used to control the snake
@@ -140,13 +161,19 @@
 
         // Change direction when the left arrow key is pressed
         if (keyBoardEvent.which === KEY_LEFT && snake.dx === 0) {
+            // Move by CELL_SIZE to the left (negative CELL_SIZE)
             snake.dx = -CELL_SIZE;
+
+            // Do not change vertical position
             snake.dy = 0;
             acceptInput = false;
         }
         // Change direction when the up arrow key is pressed
         else if (keyBoardEvent.which === KEY_UP && snake.dy === 0) {
+            // Do not change horizontal position
             snake.dx = 0;
+
+            // Move upwards by CELL_SIZE (negative CELL_SIZE)
             snake.dy = -CELL_SIZE;
             acceptInput = false;
         }
@@ -154,4 +181,4 @@
 
     // Starts the game
     requestAnimationFrame(loop);
-})();
+})(Window.Game);
